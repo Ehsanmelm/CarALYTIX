@@ -1,0 +1,18 @@
+[
+    {
+        "model":"role.Role",
+        "pk":1,
+        "fields":{
+            "name":"admin"
+        }
+    },
+    {
+        "model":"role.Role",
+        "pk":2,
+        "fields":{
+            "name":"user"
+        }
+    }
+    
+
+]

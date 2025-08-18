@@ -2,6 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from django.core.management import execute_from_command_line
 
 
 def main():
@@ -20,3 +21,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+if len(sys.argv) ==2 and sys.argv[1]=='migrate':
+    execute_from_command_line(['manage.py','loaddata','fixtures/roles.json'])
