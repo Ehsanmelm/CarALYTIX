@@ -12,4 +12,6 @@ urlpatterns = [
     path('user/logout/', LogoutView.as_view(), name='logout'),
     path('train-model/', TrainModelView.as_view(), name='train_model'),
     path('user/predict-price/', CarPricePredictView.as_view(), name='predict-price'),
+    path('user/suggest-car/', SuggestCarsByPriceView.as_view(),
+         name='suggest_car_by_price'),
 ]

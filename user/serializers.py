@@ -2,16 +2,19 @@ from rest_framework import serializers
 
 from scrap.models import Car
 from .models import CustomUser
-from rest_framework_simplejwt.tokens import RefreshToken    
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model=CustomUser
-        fields = ['password','email','first_name','last_name','role']
-        extra_kwargs = {'password' : {'write_only' : True}}
+        model = CustomUser
+        fields = ['password', 'email', 'first_name', 'last_name', 'role']
+        extra_kwargs = {'password': {'write_only': True},
+                        'role': {'read_only': True}}
+
 
 class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(write_only=True,required=True)
+    email = serializers.EmailField(write_only=True, required=True)
     password = serializers.CharField(write_only=True, required=True)
     refresh = serializers.CharField(read_only=True)
     access = serializers.CharField(read_only=True)
@@ -22,7 +25,7 @@ class UserLoginSerializer(serializers.Serializer):
         self.password = attrs["password"]
         self.user = CustomUser.objects.filter(email=email).last()
 
-        if self.user is None or  not self.user.check_password(attrs["password"]):
+        if self.user is None or not self.user.check_password(attrs["password"]):
             raise serializers.ValidationError("username or Password is wrong")
 
         return {}
@@ -32,8 +35,25 @@ class UserLoginSerializer(serializers.Serializer):
         validated_data["refresh"] = str(refresh)
         validated_data["access"] = str(refresh.access_token)
         return validated_data
-    
+
+
 class CarTrainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = ['name','model', 'gearbox', 'year', 'mile', 'body_health', 'price']
+        fields = ['name', 'model', 'gearbox',
+                  'year', 'mile', 'body_health', 'engine_status', 'price']
+
+
+class CartPricePredicateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['name', 'model', 'gearbox',
+                  'year', 'mile', 'body_health', 'engine_status']
+        extra_kwargs = {field.name: {'required': False}
+                        for field in model._meta.fields}
+
+
+class SuggestCarSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['price']
