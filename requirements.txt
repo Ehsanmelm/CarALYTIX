@@ -11,3 +11,6 @@ PyJWT==2.9.0
 sqlparse==0.5.3
 typing_extensions==4.13.2
 beautifulsoup4
+joblib
+pandas
+scikit-learn

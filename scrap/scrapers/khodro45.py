@@ -37,8 +37,8 @@ def scrap_khodro45(client):
             car_specifications = car['car_specifications']['document']
             mile = car['car_specifications']['klm']
 
-            brand_url_slug = car['car_properties']['brand']['url_slug']
-            model_url_slug = car['car_properties']['model']['url_slug']
+            brand_url_slug = car['car_properties']['brand']['seo_slug']
+            model_url_slug = car['car_properties']['model']['seo_slug']
             detail_link = f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
             body_health = scrap_body_health(detail_link)
 
