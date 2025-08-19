@@ -1,5 +1,6 @@
 from django.db import models
 from scrap.scrapers.khodro45 import scrap_khodro45
+from scrap.scrapers.hamrah_mechanic import scrap_hamrah_mechanic
 
 # Create your models here.
 
@@ -22,9 +23,11 @@ class Car(models.Model):
 class Client(models.Model):
     class ClientType(models.IntegerChoices):
         khodro45 = 1
+        hamrah_mechanic = 2
 
     scrapers = {
-        ClientType.khodro45.value: scrap_khodro45
+        ClientType.khodro45.value: scrap_khodro45,
+        ClientType.hamrah_mechanic.value: scrap_hamrah_mechanic,
     }
 
     client = models.IntegerField(choices=ClientType.choices)
