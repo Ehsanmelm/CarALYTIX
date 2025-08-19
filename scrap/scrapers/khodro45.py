@@ -11,24 +11,11 @@ def scrap_fields(link):
     body_health_score = re.search(
         r'([\d٫.]+)\s*/', body_health_score.text.strip()).group(1) if body_health_score else None
 
-    # engine_had_changed = soup.select(
-    # 'div.col-12 div.row ')[6].select_one('div.text-12')
     rows = soup.select('div.col-12 div.row')
     engine_status = None
 
-    # for row in rows:
-    #     label = row.select_one('div.text-10')  # the label column
-    #     print(row)
-    #     value = row.select_one('div.text-12')  # the value column
-    #     if label and 'موتور تعویض' in label.text:
-    #         engine_status = value.text.strip()
-    #         break
-
     page_text = soup.get_text(separator=' ')
     engine_status = None
-    # match = re.search(r'موتور تعویض[-–]?\s*(هست|نیست)?', page_text)
-    # if match:
-    #     engine_status = match.group(1) or 'هست'
 
     match = re.search(r'موتور تعویض[-–]?\s*([\w-]*)', page_text)
     if match:
@@ -36,7 +23,7 @@ def scrap_fields(link):
         if val == '' or val == '-':
             engine_status = None
         else:
-            engine_status = val  # 'هست' or 'نیست'
+            engine_status = val
     else:
         engine_status = None
 
