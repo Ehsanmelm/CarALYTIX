@@ -127,11 +127,9 @@ class SuggestCarsByPriceView(APIView):
             if target_price <= 0:
                 return Response({"error": "Price must be greater than zero."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Load trained model and columns
             model = joblib.load('car_price_model.pkl')
             model_columns = joblib.load('model_columns.pkl')
 
-            # Get all cars from DB
             cars = Car.objects.all()
             serializer = CartPricePredicateSerializer(cars, many=True)
             df = pd.DataFrame(serializer.data)
@@ -139,22 +137,18 @@ class SuggestCarsByPriceView(APIView):
             if df.empty:
                 return Response({"message": "No cars found in database."}, status=status.HTTP_404_NOT_FOUND)
 
-            # Prepare input for model
             X = df[['name', 'model', 'gearbox', 'year',
                     'mile', 'body_health', 'engine_status']]
             X_encoded = pd.get_dummies(X)
             X_encoded = X_encoded.reindex(columns=model_columns, fill_value=0)
 
-            # Predict prices
             df['predicted_price'] = model.predict(X_encoded)
 
-            # Filter cars within tolerance range
             lower_bound = target_price * (1 - tolerance)
             upper_bound = target_price * (1 + tolerance)
             suggested_cars = df[(df['predicted_price'] >= lower_bound) & (
                 df['predicted_price'] <= upper_bound)]
 
-            # Convert back to list of dicts
             result = suggested_cars.to_dict(orient='records')
 
             return Response({"suggested_cars": result})
