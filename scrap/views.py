@@ -2,16 +2,20 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-import requests , re
+import requests
+import re
 from bs4 import BeautifulSoup
 from scrap.models import Car
 # Create your views here.
+
+
 class Khodro45View(APIView):
-    def scrap_fields(self,link):
+    def scrap_fields(self, link):
 
         response = requests.get(link)
         soup = BeautifulSoup(response.text, 'html.parser')
-        body_health_score = soup.select_one('div.col-auto span.font-weight-800')
+        body_health_score = soup.select_one(
+            'div.col-auto span.font-weight-800')
         body_health_score = re.search(
             r'([\d٫.]+)\s*/', body_health_score.text.strip()).group(1) if body_health_score else None
 
@@ -31,13 +35,29 @@ class Khodro45View(APIView):
         else:
             engine_status = None
 
+        match_gear = re.search(r'گیربکس[-–]?\s*([\w-]*)', page_text)
+        if match_gear:
+            val = match_gear.group(1).strip()
+            if val in ('', '-', None):
+                gearbox_status = None
+            elif 'دستی' in val:
+                gearbox_status = 'manual'
+            elif 'اتوماتیک' in val:
+                gearbox_status = 'automatic'
+            else:
+                gearbox_status = val
+        else:
+            gearbox_status = None
+
         fields_context = {
             'body_health_score': body_health_score,
-            'engine_status': engine_status
-        }
-        return fields_context   
+            'engine_status': engine_status,
+            'gearbox_status': gearbox_status,
 
-    def post(self,request):
+        }
+        return fields_context
+
+    def post(self, request):
         try:
             count = 0
             page = 1
@@ -81,6 +101,8 @@ class Khodro45View(APIView):
                         mile=mile,
                         body_health=fields_context['body_health_score'],
                         engine_status=fields_context['engine_status'],
+                        gearbox=fields_context['gearbox_status'],
+
                     )
                     print(slug)
                     print(name)
@@ -94,13 +116,14 @@ class Khodro45View(APIView):
 
                 page += 1
 
-            return Response({"message":"khodro45 scrapp is done"},status=status.HTTP_200_OK)
-        
+            return Response({"message": "khodro45 scrapp is done"}, status=status.HTTP_200_OK)
+
         except Exception as e:
-            return Response({"error":f"An error occurred in scarap khdro45: {str(e)}"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"An error occurred in scarap khdro45: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class HamrahMechanicView(APIView):
-    def scrap_fields(self,link):
+    def scrap_fields(self, link):
 
         response = requests.get(link)
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -115,7 +138,7 @@ class HamrahMechanicView(APIView):
             if len(children) >= 2:
                 second_child = children[1]
                 body_health += int(second_child.text.strip()
-                                ) if second_child.text.strip() else 0
+                                   ) if second_child.text.strip() else 0
             else:
                 print("Second element not found in this row")
 
@@ -126,19 +149,18 @@ class HamrahMechanicView(APIView):
             'body_health_score': body_health,
         }
         return fields_context
-    
 
-    def post(self,request):
+    def post(self, request):
         count = 0
         page = 1
         while True:
             url = f'https://www.hamrah-mechanic.com/api/v1/common/newexhibition?&page={page}'
             response = requests.get(url)
             data = response.json()
-            car_list=data['data']['result']['list']
+            car_list = data['data']['result']['list']
             if not car_list:
                 break
-            
+
             for car in car_list:
                 count += 1
                 print(count)
@@ -147,17 +169,17 @@ class HamrahMechanicView(APIView):
 
                 slug = car['carNamePersian'].replace(' ', '_')
                 name = re.sub(r'\s*مدل\s*\d{4}$', '',
-                            car['carNamePersian']).strip()
+                              car['carNamePersian']).strip()
                 model = car['modelEnglishName']
                 year = car['carYear']
                 city = car['cityNamePersian']
                 price = car['price']
                 mile = car['km']
                 gearbox_perain = car['gearBoxPersian']
-                if gearbox_perain=="اتومات":
-                    gearbox="automatic"
+                if gearbox_perain == "اتومات":
+                    gearbox = "automatic"
                 else:
-                    gearbox="manual"
+                    gearbox = "manual"
 
                 brand = car['brandEnglishName']
                 orderId = car['orderId']
@@ -188,5 +210,4 @@ class HamrahMechanicView(APIView):
 
             page += 1
 
-        return Response({"message":"khodro45 scrapp is done"},status=status.HTTP_200_OK)
-
+        return Response({"message": "khodro45 scrapp is done"}, status=status.HTTP_200_OK)

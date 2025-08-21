@@ -27,9 +27,24 @@ def scrap_fields(link):
     else:
         engine_status = None
 
+    match_gear = re.search(r'گیربکس[-–]?\s*([\w-]*)', page_text)
+    if match_gear:
+        val = match_gear.group(1).strip()
+        if val in ('', '-', None):
+            gearbox_status = None
+        elif 'دستی' in val:
+            gearbox_status = 'manual'
+        elif 'اتوماتیک' in val:
+            gearbox_status = 'automatic'
+        else:
+            gearbox_status = val
+    else:
+        gearbox_status = None
+
     fields_context = {
         'body_health_score': body_health_score,
-        'engine_status': engine_status
+        'engine_status': engine_status,
+        'gearbox_status': gearbox_status,
     }
     return fields_context
 
@@ -79,6 +94,7 @@ def scrap_khodro45(client):
                 mile=mile,
                 body_health=fields_context['body_health_score'],
                 engine_status=fields_context['engine_status'],
+                gearbox=fields_context['gearbox_status'],
             )
             print(slug)
             print(name)
