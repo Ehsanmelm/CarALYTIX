@@ -39,11 +39,13 @@ def scrap_khodro45(client):
 
     count = 0
     page = 1
-    while page < 19:
+    while True:
         url = f'https://khodro45.com/api/v2/car_listing/?page={page}'
         response = requests.get(url)
         data = response.json()
 
+        if response.status_code != 200:
+            break
         for car in (data['results']):
             count += 1
             print(count)
@@ -51,8 +53,8 @@ def scrap_khodro45(client):
             print('------------------------------------')
             print(count)
             slug = car['slug']
-            name = car['car_properties']['brand']['title']
-            model = car['car_properties']['model']['title']
+            name = car['car_properties']['brand']['title_en']
+            model = car['car_properties']['model']['title_en']
             option = car['car_properties']['option']
             year = car['car_properties']['year']
             city = car['city']['title']

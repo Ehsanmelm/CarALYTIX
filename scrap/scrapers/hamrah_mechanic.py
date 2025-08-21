@@ -33,15 +33,17 @@ def scrap_fields(link):
 
 def scrap_hamrah_mechanic(client):
     from scrap.models import Car
-
     count = 0
     page = 1
-    while page < 19:
+    while True:
         url = f'https://www.hamrah-mechanic.com/api/v1/common/newexhibition?&page={page}'
         response = requests.get(url)
         data = response.json()
-
-        for car in (data['data']['result']['list']):
+        car_list=data['data']['result']['list']
+        if not car_list:
+            break
+        
+        for car in car_list:
             count += 1
             print(count)
             print(car['km'])
@@ -49,13 +51,17 @@ def scrap_hamrah_mechanic(client):
 
             slug = car['carNamePersian'].replace(' ', '_')
             name = re.sub(r'\s*مدل\s*\d{4}$', '',
-                          car['carNamePersian']).strip()
+                        car['carNamePersian']).strip()
             model = car['modelEnglishName']
             year = car['carYear']
             city = car['cityNamePersian']
             price = car['price']
             mile = car['km']
-            gearbox = car['gearBoxPersian']
+            gearbox_perain = car['gearBoxPersian']
+            if gearbox_perain=="اتومات":
+                gearbox="automatic"
+            else:
+                gearbox="manual"
 
             brand = car['brandEnglishName']
             orderId = car['orderId']
@@ -64,13 +70,16 @@ def scrap_hamrah_mechanic(client):
 
             car, _ = Car.objects.get_or_create(
                 slug=slug,
-                name=name,
+                name=brand,
                 model=model,
                 year=year,
                 city=city,
                 price=price,
                 mile=mile,
+                gearbox=gearbox,
                 body_health=fields_context['body_health_score'],
+                engine_status="نیست"
+
             )
             # print(slug)
             # print(name)
@@ -82,4 +91,4 @@ def scrap_hamrah_mechanic(client):
             # print(car_specifications)
             # print(mile)
 
-        # page += 1
+        page += 1

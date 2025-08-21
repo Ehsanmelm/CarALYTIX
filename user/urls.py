@@ -14,4 +14,6 @@ urlpatterns = [
     path('user/predict-price/', CarPricePredictView.as_view(), name='predict-price'),
     path('user/suggest-car/', SuggestCarsByPriceView.as_view(),
          name='suggest_car_by_price'),
+    path('cars/names/', UniqueCarNamesAPIView.as_view(), name='car-names'),
+    path('cars/models/', CarModelsByNameAPIView.as_view(), name='car-models-by-name'),
 ]

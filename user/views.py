@@ -94,6 +94,7 @@ class CarPricePredictView(APIView):
                 'year': serializers.validated_data.get('year', None),
                 'mile': float(serializers.validated_data.get('mile', None)),
                 'body_health': serializers.validated_data.get('body_health', None),
+                'engine_status':serializers.validated_data.get('engine_status', None),
             }
 
             model = joblib.load('car_price_model.pkl')
@@ -155,3 +156,19 @@ class SuggestCarsByPriceView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class UniqueCarNamesAPIView(APIView):
+    def get(self, request):
+        unique_names = Car.objects.values_list('name', flat=True).distinct()
+        data = [{'name': name} for name in unique_names if name]
+        return Response(data, status=status.HTTP_200_OK)
+
+class CarModelsByNameAPIView(APIView):
+    def get(self, request):
+        car_name = request.query_params.get('name')
+        if not car_name:
+            return Response({'error': 'name query param is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        unique_models = Car.objects.filter(name=car_name).values_list('model', flat=True).distinct()
+        data = [{'model': model} for model in unique_models if model]
+        return Response(data, status=status.HTTP_200_OK)
