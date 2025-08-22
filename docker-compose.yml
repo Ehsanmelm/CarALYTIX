@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+    command: >
+      bash -c "sleep 10 &&
+               python manage.py makemigrations &&
+               python manage.py migrate &&
+               python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+    networks:
+      - khu_event_network
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: khu_event_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_PASSWORD: rootpassword
+      MYSQL_USER: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - khu_event_network
+
+volumes:
+  mysql_data:
+
+networks:
+  khu_event_network:
+    driver: bridge
