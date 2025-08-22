@@ -107,8 +107,13 @@ class CarPricePredictView(APIView):
                 columns=model_columns, fill_value=0)
 
             predicted_price = model.predict(input_encoded)[0]
-
-            return Response({'predicted_price': round(predicted_price, 2)})
+            header={
+                "Authorization":"Bearer JKoG5X27YzuELHaZfY2v317GJh3xQpsnx5eXwQdpBRs="
+            }
+            response=requests.get("https://api.nerkh.io/v1/prices/json/currency/USD",headers=header)
+            usd=response.json()["data"]["prices"]["USD"]["current"]
+            price_usd= float(predicted_price) /float(usd)
+            return Response({'predicted_price': round(predicted_price, 2),"price_usd":price_usd})
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
