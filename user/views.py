@@ -193,7 +193,7 @@ class SearchAPIView(APIView):
                 slug = car['slug']
 
                 cars_list.append({
-                    "name":f"{car['car_properties']['brand']['title']} {car['car_properties']['brand']['title']} {car['car_properties']['year']}",
+                    "name":f"{car['car_properties']['brand']['title']} {car['car_properties']['model']['title']} {car['car_properties']['year']}",
                     "image":car['image']["url"],
                     "price":car['price'],
                     "source":"khdro45",
