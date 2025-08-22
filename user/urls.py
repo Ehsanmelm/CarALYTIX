@@ -16,4 +16,6 @@ urlpatterns = [
          name='suggest_car_by_price'),
     path('cars/names/', UniqueCarNamesAPIView.as_view(), name='car-names'),
     path('cars/models/', CarModelsByNameAPIView.as_view(), name='car-models-by-name'),
+    path('user/search/', SearchAPIView.as_view(), name='car-search'),
+
 ]

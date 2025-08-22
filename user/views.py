@@ -172,3 +172,33 @@ class CarModelsByNameAPIView(APIView):
         unique_models = Car.objects.filter(name=car_name).values_list('model', flat=True).distinct()
         data = [{'model': model} for model in unique_models if model]
         return Response(data, status=status.HTTP_200_OK)
+    
+class SearchAPIView(APIView):
+
+    def get(self,request):
+        search = request.query_params.get('search')
+
+        cars_list=[]
+        page = 1
+        while True:
+            url = f'https://khodro45.com/api/v2/car_listing/?page={page}&search={search}'
+            response = requests.get(url)
+            data = response.json()
+
+            if response.status_code != 200:
+                break
+            for car in data['results']:
+                brand_url_slug = car['car_properties']['brand']['seo_slug']
+                model_url_slug = car['car_properties']['model']['seo_slug']
+                slug = car['slug']
+
+                cars_list.append({
+                    "name":f"{car['car_properties']['brand']['title']} {car['car_properties']['brand']['title']} {car['car_properties']['year']}",
+                    "image":car['image']["url"],
+                    "price":car['price'],
+                    "source":"khdro45",
+                    "link":f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
+                })
+            page=page+1
+            
+        return Response({"data":cars_list},status=status.HTTP_200_OK)
