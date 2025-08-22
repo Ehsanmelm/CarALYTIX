@@ -9,6 +9,12 @@ from scrap.models import Car
 # Create your views here.
 
 
+def convert_miladi_to_shasi(year):
+    if 1900 <= year <= 2100:
+        return year-621
+    return year
+
+
 class Khodro45View(APIView):
     def scrap_fields(self, link):
 
@@ -78,7 +84,9 @@ class Khodro45View(APIView):
                     name = car['car_properties']['brand']['title_en']
                     model = car['car_properties']['model']['title_en']
                     option = car['car_properties']['option']
-                    year = car['car_properties']['year']
+                    # year = car['car_properties']['year']
+                    year = convert_miladi_to_shasi(
+                        car['car_properties']['year'])
                     city = car['city']['title']
                     price = car['price']
                     car_specifications = car['car_specifications']['document']
@@ -171,7 +179,8 @@ class HamrahMechanicView(APIView):
                 name = re.sub(r'\s*مدل\s*\d{4}$', '',
                               car['carNamePersian']).strip()
                 model = car['modelEnglishName']
-                year = car['carYear']
+                # year = car['carYear']
+                year = convert_miladi_to_shasi(car['carYear'])
                 city = car['cityNamePersian']
                 price = car['price']
                 mile = car['km']
