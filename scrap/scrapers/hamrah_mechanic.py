@@ -3,6 +3,11 @@ import re
 from bs4 import BeautifulSoup
 
 
+def convert_miladi_to_shasi(year):
+    if 1900 <= year <= 2100:
+        return year-621
+
+
 def scrap_fields(link):
 
     response = requests.get(link)
@@ -39,10 +44,10 @@ def scrap_hamrah_mechanic(client):
         url = f'https://www.hamrah-mechanic.com/api/v1/common/newexhibition?&page={page}'
         response = requests.get(url)
         data = response.json()
-        car_list=data['data']['result']['list']
+        car_list = data['data']['result']['list']
         if not car_list:
             break
-        
+
         for car in car_list:
             count += 1
             print(count)
@@ -51,17 +56,17 @@ def scrap_hamrah_mechanic(client):
 
             slug = car['carNamePersian'].replace(' ', '_')
             name = re.sub(r'\s*مدل\s*\d{4}$', '',
-                        car['carNamePersian']).strip()
+                          car['carNamePersian']).strip()
             model = car['modelEnglishName']
-            year = car['carYear']
+            year = convert_miladi_to_shasi(car['carYear'])
             city = car['cityNamePersian']
             price = car['price']
             mile = car['km']
             gearbox_perain = car['gearBoxPersian']
-            if gearbox_perain=="اتومات":
-                gearbox="automatic"
+            if gearbox_perain == "اتومات":
+                gearbox = "automatic"
             else:
-                gearbox="manual"
+                gearbox = "manual"
 
             brand = car['brandEnglishName']
             orderId = car['orderId']

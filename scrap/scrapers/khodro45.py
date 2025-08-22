@@ -3,6 +3,11 @@ import re
 from bs4 import BeautifulSoup
 
 
+def convert_miladi_to_shasi(year):
+    if 1900 <= year <= 2100:
+        return year-621
+
+
 def scrap_fields(link):
 
     response = requests.get(link)
@@ -72,6 +77,7 @@ def scrap_khodro45(client):
             model = car['car_properties']['model']['title_en']
             option = car['car_properties']['option']
             year = car['car_properties']['year']
+            year = convert_miladi_to_shasi(car['car_properties']['year'])
             city = car['city']['title']
             price = car['price']
             car_specifications = car['car_specifications']['document']
