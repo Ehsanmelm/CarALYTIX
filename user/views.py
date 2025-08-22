@@ -200,5 +200,41 @@ class SearchAPIView(APIView):
                     "link":f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
                 })
             page=page+1
+
+        url = f'https://www.hamrah-mechanic.com/api/v1/common/newexhibition?brand={search}&page=1&size=500'
+        response = requests.get(url)
+        data = response.json()
+        car_list = data['data']['result']['list']
+        if car_list:
+            for car in car_list:
+                model = car['modelEnglishName']
+                brand = car['brandEnglishName']
+                orderId = car['orderId']
+                cars_list.append({
+                "name":car["carNamePersian"],
+                "image":car['imageUrl'],
+                "price":car['price'],
+                "source":"hamrah-mechanic",
+                "link":f"https://www.hamrah-mechanic.com/cars-for-sale/{brand}/{model}/{orderId}/"
+            })
+                    
+        url = f'https://www.hamrah-mechanic.com/api/v1/common/newexhibition?model={search}&page=1&size=500'
+        response = requests.get(url)
+        data = response.json()
+        car_list = data['data']['result']['list']
+        if car_list:
+            for car in car_list:
+                model = car['modelEnglishName']
+                brand = car['brandEnglishName']
+                orderId = car['orderId']
+                cars_list.append({
+                "name":car["carNamePersian"],
+                "image":car['imageUrl'],
+                "price":car['price'],
+                "source":"hamrah-mechanic",
+                "link":f"https://www.hamrah-mechanic.com/cars-for-sale/{brand}/{model}/{orderId}/"
+            })
+
+
             
         return Response({"data":cars_list},status=status.HTTP_200_OK)
