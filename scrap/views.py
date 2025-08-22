@@ -12,6 +12,7 @@ from scrap.models import Car
 def convert_miladi_to_shasi(year):
     if 1900 <= year <= 2100:
         return year-621
+    return year
 
 
 class Khodro45View(APIView):

@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 def convert_miladi_to_shasi(year):
     if 1900 <= year <= 2100:
         return year-621
+    return year
 
 
 def scrap_fields(link):
