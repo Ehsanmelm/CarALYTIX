@@ -77,8 +77,8 @@ def scrap_hamrah_mechanic(client):
 
             car, _ = Car.objects.get_or_create(
                 slug=slug,
-                name=brand,
-                model=model,
+                name=brand.lower(),
+                model=model.lower(),
                 year=year,
                 city=city,
                 price=price,

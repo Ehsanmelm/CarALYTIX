@@ -99,8 +99,8 @@ class Khodro45View(APIView):
 
                     car, _ = Car.objects.get_or_create(
                         slug=slug,
-                        name=name,
-                        model=model,
+                        name=name.lower(),
+                        model=model.lower(),
                         option=option,
                         year=year,
                         city=city,
@@ -197,8 +197,8 @@ class HamrahMechanicView(APIView):
 
                 car, _ = Car.objects.get_or_create(
                     slug=slug,
-                    name=brand,
-                    model=model,
+                    name=brand.lower(),
+                    model=model.lower(),
                     year=year,
                     city=city,
                     price=price,
@@ -220,3 +220,42 @@ class HamrahMechanicView(APIView):
             page += 1
 
         return Response({"message": "khodro45 scrapp is done"}, status=status.HTTP_200_OK)
+
+
+class karnamehView(APIView):
+
+    def post(self,request):
+        next_set= "1755785037096"
+    
+        while True:
+            
+            url = f"https://api-gw.karnameh.com/post-storage/car-posts/car-post-list/?size=100&start=0&sort=newest&relevant=false&is_guaranteed=false&next_set={next_set}&next_set=1"
+
+            response = requests.get(url)
+            data=response.json()["car_posts"]
+            if not data:
+                break
+            for car in data:
+                if car["price"]==0:
+                    continue
+                gearbox=car['gearbox']
+                if gearbox=="":
+                    gearbox=None
+                Car.objects.get_or_create(
+                        slug=None,
+                        name=car["brand_name_en"].lower(),
+                        model=car["model_name_en"].lower(),
+                        option=None,
+                        year=convert_miladi_to_shasi(car["year"]),
+                        city=car["city_name_fa"],
+                        price=car["price"],
+                        car_specifications=None,
+                        mile=car["usage"],
+                        body_health=None,
+                        engine_status="نیست",
+                        gearbox=gearbox,
+                        )
+                
+            next_set=response.json()["next_set"][0]
+
+        return Response({"message":"karnameh is done"})

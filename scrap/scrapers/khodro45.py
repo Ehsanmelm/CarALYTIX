@@ -91,8 +91,8 @@ def scrap_khodro45(client):
 
             car, _ = Car.objects.get_or_create(
                 slug=slug,
-                name=name,
-                model=model,
+                name=name.lower(),
+                model=model.lower(),
                 option=option,
                 year=year,
                 city=city,
