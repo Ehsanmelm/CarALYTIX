@@ -277,7 +277,7 @@ class FixKhodro45View(APIView):
         for car in cars:
             english_number=persian_to_english_number(car.body_health)
             car.body_health=english_number
-            if car.engine_status=="":
+            if car.engine_status==None:
                 car.engine_status="نیست"
             car.save()
         return Response({"message":"done"})
