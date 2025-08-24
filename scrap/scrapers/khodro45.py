@@ -78,7 +78,7 @@ def scrap_khodro45(client):
             model = car['car_properties']['model']['title_en']
             option = car['car_properties']['option']
             year = car['car_properties']['year']
-            year = convert_miladi_to_shasi(car['car_properties']['year'])
+            year = convert_miladi_to_shasi(int(year))
             city = car['city']['title']
             price = car['price']
             car_specifications = car['car_specifications']['document']
