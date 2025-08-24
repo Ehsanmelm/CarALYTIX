@@ -3,8 +3,14 @@
 # PASSWORD=""
 # HOST="localhost"
 
-NAME = "caralytix"
-USER = "root"
-PASSWORD = "@Mohammad1382"
+# NAME = "caralytix"
+# USER = "root"
+# PASSWORD = "@Mohammad1382"
+# # HOST = "localhost"
+# HOST = "db"
+
+NAME = "hamdb"
+USER = "hamadmin"
+PASSWORD = "v6DT0QRKjIAVpPMh715D"
 # HOST = "localhost"
 HOST = "db"
