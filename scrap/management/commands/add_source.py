@@ -6,9 +6,10 @@ from scrap.models import Car
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        cars = Car.objects.filter(source__isnul=True)
+        cars = Car.objects.filter(source__isnull=True)
         for car in cars:
             car.source = 'hamrah-mechanic'
+            car.save()
 
         self.stdout.write(self.style.SUCCESS(
             f"add source for hamrah-mechanic for  {cars.count()} new assignments"
