@@ -3,11 +3,11 @@
 # PASSWORD=""
 # HOST="localhost"
 
-# NAME = "caralytix"
+# NAME = "car"
 # USER = "root"
 # PASSWORD = "@Mohammad1382"
-# # HOST = "localhost"
-# HOST = "db"
+# HOST = "localhost"
+# # HOST = "db"
 
 NAME = "hamdb"
 USER = "hamadmin"
