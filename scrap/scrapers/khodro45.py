@@ -102,6 +102,7 @@ def scrap_khodro45(client):
                 body_health=fields_context['body_health_score'],
                 engine_status=fields_context['engine_status'],
                 gearbox=fields_context['gearbox_status'],
+                source='khodro45',
             )
             print(slug)
             print(name)

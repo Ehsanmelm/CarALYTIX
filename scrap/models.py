@@ -18,6 +18,8 @@ class Car(models.Model):
     car_specifications = models.CharField(max_length=255, null=True)
     body_health = models.CharField(max_length=255, null=True)
     engine_status = models.CharField(max_length=255, null=True)
+    source = models.CharField(max_length=255, blank=True, null=True)
+    created_At = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 
 class Client(models.Model):

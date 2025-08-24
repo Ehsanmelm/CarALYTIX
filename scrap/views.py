@@ -110,6 +110,7 @@ class Khodro45View(APIView):
                         body_health=fields_context['body_health_score'],
                         engine_status=fields_context['engine_status'],
                         gearbox=fields_context['gearbox_status'],
+                        source='khodro45',
 
                     )
                     print(slug)
@@ -205,7 +206,9 @@ class HamrahMechanicView(APIView):
                     mile=mile,
                     gearbox=gearbox,
                     body_health=fields_context['body_health_score'],
-                    engine_status="نیست"
+                    engine_status="نیست",
+                    source='hamrah-mechanic',
+
                 )
                 # print(slug)
                 # print(name)
@@ -254,6 +257,7 @@ class karnamehView(APIView):
                     body_health=None,
                     engine_status="نیست",
                     gearbox=gearbox,
+                    source='karnameh',
                 )
 
             next_set = response.json()["next_set"][0]

@@ -85,7 +85,8 @@ def scrap_hamrah_mechanic(client):
                 mile=mile,
                 gearbox=gearbox,
                 body_health=fields_context['body_health_score'],
-                engine_status="نیست"
+                engine_status="نیست",
+                source='hamrah-mechanic',
 
             )
             # print(slug)
