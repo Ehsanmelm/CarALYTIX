@@ -19,7 +19,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 class CarAdmin(admin.ModelAdmin):
     list_display = ('name', 'model', 'year', 'price',
-                    'mile', 'body_health', 'engine_status')
+                    'mile', 'body_health', 'engine_status', 'source')
 
 
 admin.site.register(Client, ClientAdmin)
