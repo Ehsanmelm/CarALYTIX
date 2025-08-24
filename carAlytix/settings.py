@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2+^sj$sqt01brky4++ohq6r$!k*odff!6!zg3(-4n(81je^l(x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -194,3 +194,13 @@ SIMPLE_JWT = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+
+CORS_ALLOWED_ORIGINS = [
+    'https://caralytix.darkube.app',
+    # 'https://event-front.darkube.app',
+    # 'http://localhost:3000'
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://caralytix.darkube.app',
+    # 'https://event-front.darkube.app'
+]
