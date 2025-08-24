@@ -1,7 +1,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-
+from scrap.functions import persian_to_english_number
 
 def convert_miladi_to_shasi(year):
     if 1900 <= year <= 2100:
@@ -88,6 +88,11 @@ def scrap_khodro45(client):
             model_url_slug = car['car_properties']['model']['seo_slug']
             detail_link = f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
             fields_context = scrap_fields(detail_link)
+            
+            if fields_context['engine_status']=="-":
+                engine_status="نیست"
+            else:
+                engine_status=fields_context['engine_status']
 
             car, _ = Car.objects.get_or_create(
                 slug=slug,
@@ -99,8 +104,8 @@ def scrap_khodro45(client):
                 price=price,
                 car_specifications=car_specifications,
                 mile=mile,
-                body_health=fields_context['body_health_score'],
-                engine_status=fields_context['engine_status'],
+                body_health=persian_to_english_number(fields_context['body_health_score']),
+                engine_status=engine_status,
                 gearbox=fields_context['gearbox_status'],
                 source='khodro45',
             )

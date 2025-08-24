@@ -18,7 +18,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('name', 'model', 'year', 'price',
+    list_display = ('name', 'model', 'year', 'price','gearbox',
                     'mile', 'body_health', 'engine_status', 'source')
 
 

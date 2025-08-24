@@ -6,6 +6,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from scrap.models import Car
+from scrap.functions import persian_to_english_number
 # Create your views here.
 
 
@@ -97,6 +98,11 @@ class Khodro45View(APIView):
                     detail_link = f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
                     fields_context = self.scrap_fields(detail_link)
 
+                    if fields_context['engine_status']=="-":
+                        engine_status="نیست"
+                    else:
+                        engine_status=fields_context['engine_status']
+
                     car, _ = Car.objects.get_or_create(
                         slug=slug,
                         name=name.lower(),
@@ -107,11 +113,10 @@ class Khodro45View(APIView):
                         price=price,
                         car_specifications=car_specifications,
                         mile=mile,
-                        body_health=fields_context['body_health_score'],
-                        engine_status=fields_context['engine_status'],
+                        body_health=persian_to_english_number(fields_context['body_health_score']),
+                        engine_status=engine_status,
                         gearbox=fields_context['gearbox_status'],
                         source='khodro45',
-
                     )
                     print(slug)
                     print(name)
@@ -263,3 +268,16 @@ class karnamehView(APIView):
             next_set = response.json()["next_set"][0]
 
         return Response({"message": "karnameh is done"})
+
+
+class FixKhodro45View(APIView):
+
+    def post(self,request):
+        cars=Car.objects.filter(source="khodro45")
+        for car in cars:
+            english_number=persian_to_english_number(car.body_health)
+            car.body_health=english_number
+            if car.engine_status=="-":
+                car.engine_status="نیست"
+            car.save()
+        return Response({"message":"done"})
