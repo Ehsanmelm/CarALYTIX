@@ -1,6 +1,7 @@
 services:
   web:
     build: .
+    restart: always
     ports:
       - "8000:8000"
     volumes:
@@ -20,12 +21,12 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: khu_event_db
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_PASSWORD: rootpassword
-      MYSQL_USER: root
+      MYSQL_DATABASE: caralytix
+      MYSQL_ROOT_PASSWORD: "@Mohammad1382"
+      # MYSQL_PASSWORD: "@Mohammad1382"
+      # MYSQL_USER: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
