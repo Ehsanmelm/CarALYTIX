@@ -89,7 +89,7 @@ def scrap_khodro45(client):
             detail_link = f"https://khodro45.co/used-car/{brand_url_slug}-{model_url_slug}/{car['city']['title_en']}/cla-{slug}/"
             fields_context = scrap_fields(detail_link)
 
-            if fields_context['engine_status']=="":
+            if fields_context['engine_status']==None:
                 engine_status="نیست"
             else:
                 engine_status=fields_context['engine_status']
