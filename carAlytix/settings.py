@@ -196,11 +196,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
 
 CORS_ALLOWED_ORIGINS = [
-    'https://caralytix.darkube.app',
+    'https://caralytix-api.darkube.app',
     # 'https://event-front.darkube.app',
     # 'http://localhost:3000'
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://caralytix.darkube.app',
+    'https://caralytix-api.darkube.app',
     # 'https://event-front.darkube.app'
 ]
