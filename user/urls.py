@@ -18,5 +18,6 @@ urlpatterns = [
     path('cars/models/', CarModelsByNameAPIView.as_view(), name='car-models-by-name'),
     path('user/search/', SearchAPIView.as_view(), name='car-search'),
     path("all_cars/", AllCarsView.as_view(), name='all_cars'),
+    path("create_all_cars/", CreateAllCarsView.as_view(), name='create_all_cars'),
 
 ]

@@ -248,3 +248,30 @@ class AllCarsView(APIView):
 
     def get(self,request):
         return Response(AllCarsSerializer(instance=Car.objects.all(),many=True).data,status=status.HTTP_200_OK)
+    
+class CreateAllCarsView(APIView):
+
+    def post(self,request):
+
+        cars=request.data
+
+        for car in cars:
+            Car.objects.get_or_create(
+                id= car["id"],
+                slug= car["slug"],
+                name= car["name"],
+                model= car["model"],
+                option= car["option"],
+                price= car["price"],
+                mile= car["mile"],
+                gearbox= car["gearbox"],
+                city= car["city"],
+                year= car["year"],
+                car_specifications= car["car_specifications"],
+                body_health= car["body_health"],
+                engine_status= car["engine_status"],
+                source= car["source"],
+                created_At= car["created_At"]
+            )
+        
+        return Response({"message":"done"})
