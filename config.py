@@ -11,6 +11,6 @@
 
 NAME = "mysql"
 USER = "root"
-PASSWORD = "BFCiECluC8UY3iRFxK48"
+PASSWORD = "X0q0SpZkPCACDvxvHZBM"
 # HOST = "localhost"
-HOST = "cardb.caralytix.svc"
+HOST = "car-db.caralytix.svc"
