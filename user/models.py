@@ -34,6 +34,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         ordering = ['created_at']
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
-        db_table = 'user'
+        verbose_name = 'custom_user'
+        verbose_name_plural = 'custom_users'
+        db_table = 'custom_user'
