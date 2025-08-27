@@ -57,3 +57,9 @@ class SuggestCarSerialzier(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ['price']
+
+class AllCarsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Car
+        fields="__all__"

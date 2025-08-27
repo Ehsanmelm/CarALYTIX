@@ -243,3 +243,8 @@ class SearchAPIView(APIView):
 
             
         return Response({"data":cars_list},status=status.HTTP_200_OK)
+    
+class AllCarsView(APIView):
+
+    def get(self,request):
+        return Response(AllCarsSerializer(instance=Car.objects.all(),many=True).data,status=status.HTTP_200_OK)
