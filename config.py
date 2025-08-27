@@ -9,8 +9,8 @@
 # HOST = "localhost"
 # # HOST = "db"
 
-NAME = "hamdb"
-USER = "hamadmin"
-PASSWORD = "v6DT0QRKjIAVpPMh715D"
+NAME = "cardb"
+USER = "root"
+PASSWORD = "BFCiECluC8UY3iRFxK48"
 # HOST = "localhost"
-HOST = "caralytix-db-proxysql-svc.caralytix.svc"
+HOST = "cardb.caralytix.svc"
