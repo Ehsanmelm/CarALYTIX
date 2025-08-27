@@ -9,7 +9,7 @@
 # HOST = "localhost"
 # # HOST = "db"
 
-NAME = "cardb"
+NAME = "mysql"
 USER = "root"
 PASSWORD = "BFCiECluC8UY3iRFxK48"
 # HOST = "localhost"
