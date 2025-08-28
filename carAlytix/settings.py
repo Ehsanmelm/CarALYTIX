@@ -14,6 +14,8 @@ import config
 from pathlib import Path
 from datetime import timedelta
 import os
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -204,3 +206,14 @@ CSRF_TRUSTED_ORIGINS = [
     'https://caralytix-api.darkube.app',
     'https://caralytix.darkube.app',
 ]
+
+# CELERY_BEAT_SCHEDULE = {
+#     "train-car-model-midnight": {
+#         "task": "car.tasks.train_car_price_model",
+#         "schedule": crontab(hour=0, minute=0),  # 12:00 AM
+#     },
+#     "train-car-model-8am": {
+#         "task": "car.tasks.train_car_price_model",
+#         "schedule": crontab(hour=4, minute=0),  # 4:00 AM
+#     },
+# }
